@@ -694,6 +694,17 @@ Using nox, test the app against Python versions `3.9`, `3.10`, `3.11`, and `3.12
 
 <img src="https://raw.githubusercontent.com/eli64s/readme-ai/eb2a0b4778c633911303f3c00f87874f398b5180/docs/docs/assets/svg/line-gradient.svg" alt="line break" width="100%" height="3px">
 
+## CI
+
+The [CI workflow][ci-workflow] runs on every pull request and push to `main`, checking:
+
+- **Lint** — Ruff linting and format checks
+- **Typecheck** — Static type analysis with mypy
+- **Test** — Pytest test suite with coverage
+- **Build** — Poetry package build verification
+
+<img src="https://raw.githubusercontent.com/eli64s/readme-ai/eb2a0b4778c633911303f3c00f87874f398b5180/docs/docs/assets/svg/line-gradient.svg" alt="line break" width="100%" height="3px">
+
 ## Configuration
 
 Customize your README generation with a variety of options and style settings supported such as:
@@ -826,6 +837,7 @@ Released under the [MIT][license] license.
 <!-- REFERENCE LINKS -->
 <!-- README-AI RESOURCES -->
 [readme-ai]: https://github.com/eli64s/readme-ai
+[ci-workflow]: https://github.com/eli64s/readme-ai/blob/main/.github/workflows/ci.yml
 [readme-ai-streamlit]: https://github.com/eli64s/readme-ai-streamlit
 [actions]: https://github.com/eli64s/readme-ai/actions
 [codecov]: https://app.codecov.io/gh/eli64s/readme-ai
