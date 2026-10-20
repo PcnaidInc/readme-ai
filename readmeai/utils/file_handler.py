@@ -39,7 +39,7 @@ class FileHandler:
             self.cache[file_path] = content
             return content
         except Exception as exc:
-            raise FileReadError(exc, file_path) from exc
+            raise FileReadError(f"Error reading file: {file_path}, {exc}") from exc
 
     def write(self, file_path: Union[str, Path], content: Any) -> None:
         """Write the content to a file."""
@@ -48,9 +48,9 @@ class FileHandler:
             writer = self.get_action(file_extension, "write")
             writer(file_path, content)
         except Exception as exc:
-            raise FileWriteError(exc, file_path) from exc
+            raise FileWriteError(f"Error writing file: {file_path}, {exc}") from exc
 
-    def get_action(self, file_extension: str, action_type: str) -> Callable[[str], Any]:
+    def get_action(self, file_extension: str, action_type: str) -> Callable[..., Any]:
         """Get the method for the passed file extension and I/O operation."""
         file_actions = self.file_actions.get(file_extension)
         if not file_actions:

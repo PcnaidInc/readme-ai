@@ -1,6 +1,13 @@
+from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel, Field
+
+from readmeai.config.settings import ConfigLoader
+from readmeai.extractors.dependencies import FileProcessor
+from readmeai.extractors.metadata import MetadataExtractor
+from readmeai.extractors.models import FileContext, QuickStart
+from readmeai.generators.quickstart import QuickStartGenerator
 
 
 class BadgeInfo(BaseModel):
@@ -42,7 +49,7 @@ class BadgeExtractor:
 
     def __init__(self, config: ConfigLoader) -> None:
         self.config = config
-        self._badge_definitions = {
+        self._badge_definitions: dict[str, dict[str, object]] = {
             "prettier": {
                 "files": [
                     ".prettierrc",
@@ -86,12 +93,13 @@ class BadgeExtractor:
         file_paths = {file.path for file in file_contexts}
 
         for badge_name, badge_config in self._badge_definitions.items():
-            if self._has_badge_files(file_paths, badge_config["files"]):
+            badge_files: list[str] = badge_config["files"]  # type: ignore[assignment]
+            if self._has_badge_files(file_paths, badge_files):
                 badges.append(
                     BadgeInfo(
                         name=badge_name,
-                        description=badge_config["description"],
-                        url=badge_config["url"],
+                        description=badge_config["description"],  # type: ignore[arg-type]
+                        url=badge_config["url"],  # type: ignore[arg-type]
                     )
                 )
 

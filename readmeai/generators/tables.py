@@ -1,5 +1,6 @@
 # Updated Script with Corrected 'Current Directory' Path Format
 from pathlib import Path
+from typing import Any
 
 from readmeai.core.logger import get_logger
 
@@ -7,7 +8,7 @@ _logger = get_logger(__name__)
 
 
 def _generate_nested_module_content(
-    module_data: dict[str, dict | list[tuple[str, str]]] | list[tuple[str, str]],
+    module_data: dict[str, Any] | list[tuple[str, str]],
     repo_path: str | Path,
     is_local_repo: bool,
     repo_url: str,
@@ -31,7 +32,7 @@ def _generate_nested_module_content(
         content.append(f"{indent}</table>")
     elif isinstance(module_data, dict):
         # Check if there are files at this module level
-        files = module_data.get("", [])
+        files: Any = module_data.get("", [])
         if files:
             content.append(f"{indent}<table>")
             content.extend(
@@ -82,7 +83,7 @@ def generate_nested_module_tables(
 
 
 def build_submodule_disclosure_widget(
-    data: dict[str, dict | list[tuple[str, str]]],
+    data: dict[str, Any],
     repo_path: str | Path,
     repo_url: str,
 ) -> str:
@@ -127,7 +128,7 @@ def build_submodule_disclosure_widget(
         ]
 
     def process_module(
-        module_name: str, module_data: dict | list, current_path: list[str], indent: str
+        module_name: str, module_data: Any, current_path: list[str], indent: str
     ) -> list[str]:
         """Processes a module and its contents recursively."""
         section = []
@@ -158,7 +159,7 @@ def build_submodule_disclosure_widget(
             section.append(f"{indent}\t\t</table>")
         elif isinstance(module_data, dict):
             # Handle nested structure
-            files = module_data.get("", [])
+            files: list[tuple[str, str]] = module_data.get("", [])  # type: ignore[assignment]
             if files:
                 section.extend(create_table_header(indent + "\t\t"))
                 section.extend(
@@ -233,9 +234,9 @@ def _get_file_hyperlink(
 
 def group_summaries_by_nested_module(
     summaries: list[tuple[str, str]],
-) -> dict[str, dict | list[tuple[str, str]]]:
+) -> dict[str, Any]:
     """Group code summaries by their nested module structure."""
-    module_map: dict[str, dict | list[tuple[str, str]]] = {"__root__": []}
+    module_map: dict[str, Any] = {"__root__": []}
 
     for module, summary in summaries:
         if not isinstance(module, str) or not isinstance(summary, str):
