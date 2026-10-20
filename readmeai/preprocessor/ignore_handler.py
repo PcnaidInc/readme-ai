@@ -69,7 +69,7 @@ class IgnoreHandler:
 
     def _parse_patterns(self, patterns: List[str]) -> Dict[str, List[str]]:
         """Parses a flat list of patterns into a structured dictionary."""
-        categorized = {"directories": [], "extensions": [], "files": []}
+        categorized: dict[str, list[str]] = {"directories": [], "extensions": [], "files": []}
         for p in patterns:
             if p.endswith("/"):
                 categorized["directories"].append(p.strip("/"))

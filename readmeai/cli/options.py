@@ -192,7 +192,7 @@ temperature = click.option(
     "-t",
     "--temperature",
     default=0.1,
-    type=click.FloatRange(min_open=0.0, max=2.0, clamp=True),
+    type=click.FloatRange(0.0, 2.0, clamp=True),
     help="Increasing temperature yields more randomness in text generation.",
 )
 

@@ -19,13 +19,13 @@ def build_resource_path(
     Tries importlib.resources first, falls back to pkg_resources.
     """
     try:
-        return resources.files(module).joinpath(submodule, file_path)
+        return Path(str(resources.files(module).joinpath(submodule, file_path)))
 
     except (TypeError, FileNotFoundError) as e:
         _logger.error(f"Error loading resource file via importlib.resources: {e}")
 
     try:
-        import pkg_resources
+        import pkg_resources  # type: ignore[import-untyped]
 
         submodule = submodule.replace(".", "/")
         return Path(

@@ -68,31 +68,33 @@ def convert(text: str) -> str:
         unordered_match = UNORDERED_LIST_RE.match(line)
         ordered_match = ORDERED_LIST_RE.match(line)
 
-        if unordered_match or ordered_match:
-            match = unordered_match or ordered_match
-            indent, content = match.groups()
+        if unordered_match:
+            indent, content = unordered_match.groups()
+            list_tag = "ul"
+        elif ordered_match:
+            indent, content = ordered_match.groups()
+            list_tag = "ol"
+        else:
+            result.append(process_inline(line))
+            continue
+
+        if True:  # restructure for proper nesting
 
             if not in_list:
                 list_indent = indent
-                list_type = "ul" if unordered_match else "ol"
+                list_type = list_tag
                 result.append(f"{indent}<{list_type}>")
                 in_list = True
             elif (
-                list_type != ("ul" if unordered_match else "ol")
+                list_type != list_tag
                 or indent != list_indent
             ):
                 result.append(f"{list_indent}</{list_type}>")
                 list_indent = indent
-                list_type = "ul" if unordered_match else "ol"
+                list_type = list_tag
                 result.append(f"{indent}<{list_type}>")
 
             result.append(f"{indent}<li>{process_inline(content)}</li>")
-        else:
-            if in_list:
-                result.append(f"{list_indent}</{list_type}>")
-                in_list = False
-                list_type = None
-            result.append(process_inline(line))
 
     if in_list:
         result.append(f"{list_indent}</{list_type}>")
